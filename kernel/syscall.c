@@ -105,6 +105,7 @@ extern uint64 sys_wait(void);
 extern uint64 sys_write(void);
 extern uint64 sys_uptime(void);
 extern uint64 sys_trace(void);
+extern uint64 sys_sysinfo(void);
 
 static uint64 (*syscalls[])(void) = {
 [SYS_trace]   sys_trace,
@@ -129,9 +130,10 @@ static uint64 (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+[SYS_sysinfo] sys_sysinfo,
 };
 
-const char *sys_name[22] = {
+const char *sys_name[23] = {
   "trace",
   "fork",
   "exit",
@@ -154,6 +156,7 @@ const char *sys_name[22] = {
   "link",
   "mkdir",
   "close",
+  "sysinfo",
 };
 
 void

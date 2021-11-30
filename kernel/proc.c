@@ -130,6 +130,24 @@ found:
   return p;
 }
 
+
+// count the num of process whose state is not UNSED
+uint64
+countproc()
+{
+  uint64 num = 0;
+  struct proc *p;
+  
+  for (p = proc; p < &proc[NPROC]; p++) {
+    acquire(&p->lock);
+    if (p->state != UNUSED) {
+      num++;
+    }
+    release(&p->lock);
+  }
+  return num;
+}
+
 // free a proc structure and the data hanging from it,
 // including user pages.
 // p->lock must be held.

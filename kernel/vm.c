@@ -88,6 +88,35 @@ walk(pagetable_t pagetable, uint64 va, int alloc)
   return &pagetable[PX(0, va)];
 }
 
+void print_depth(int depth) {
+  for (int i = 0; i < depth; ++i) {
+    printf(".. ");
+  }
+  printf("..");
+}
+
+void traversal_pagetable(pagetable_t pagetable, int depth) {
+  if (depth > 2) {
+    return;
+  }
+  for (int i = 0; i < 512; ++i) {
+    pte_t pte = pagetable[i];
+    if (pte & PTE_V) {
+      uint64 pa = PTE2PA(pte);
+      print_depth(depth);
+      printf("%d: pte %p pa %p\n", i, pte, pa);
+      traversal_pagetable((pagetable_t)pa, depth + 1);
+    }
+  }
+  return;
+}
+
+void
+vmprint(pagetable_t pagetable) {
+  printf("page table %p\n", pagetable);
+  traversal_pagetable(pagetable, 0);
+}
+
 // Look up a virtual address, return the physical address,
 // or 0 if not mapped.
 // Can only be used to look up user pages.
